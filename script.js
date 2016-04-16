@@ -12,11 +12,12 @@ $(document).ready(function() {
 	$("#start").click(function() {
 		$(this).prop( "disabled", true );
 
-		var speed = parseInt($("#speed").val());
-		initial = parseInt($("#bet").val());
+		var speed = parseFloat($("#speed").val());
+		var mult = parseFloat($("#mult").val());
+		initial = parseFloat($("#bet").val());
 
 		var tt = setInterval(function() {
-			if (parseInt($("#bet").val()) > parseInt($("#balance").val())) {
+			if (parseFloat($("#bet").val()) > parseFloat($("#balance").val())) {
 				clearInterval(tt);
 				clearInterval(t);
 				alert("Insufficient Funds");
@@ -25,43 +26,43 @@ $(document).ready(function() {
 		}, 1);
 
 		t = setInterval(function() { 
-			var bal = parseInt($("#balance").val());
-			var bet = parseInt($("#bet").val());
-			var profit = parseInt($("#profit").val());
+			var bal = parseFloat($("#balance").val());
+			var bet = parseFloat($("#bet").val());
+			var profit = parseFloat($("#profit").val());
 
 			num++;
 			total += bet;
 
 			var r = Math.random();
 			if (r*100 <= 47.5) {
-				$("#balance").val(parseInt(bal + bet));
+				$("#balance").val(parseFloat(bal + bet*mult));
 
 				if (history.length > 15) {
 					history.shift();
 				}
 
 				a.push(r*100);
-				a.push("<strong style='color:green;'>" + bet + "</strong>");
-				$("#profit").val(parseInt(profit + bet));
+				a.push("<strong style='color:green;'>" + bet*mult + "</strong>");
+				$("#profit").val(parseFloat(profit + bet*mult));
 
 				history.push(a);
 
-				$("#bet").val(parseInt(initial));
+				$("#bet").val(parseFloat(initial));
 
-				winS += bet;
+				winS += bet*mult;
 
 			} else {
-				$("#balance").val(parseInt(bal - bet));
+				$("#balance").val(parseFloat(bal - bet));
 				if (history.length > 15) {
 					history.shift();
 				}
 
 				a.push(r*100);
 				a.push("<strong style='color:red;'>" + bet + "</strong>");
-				$("#profit").val(parseInt(profit - bet));
+				$("#profit").val(parseFloat(profit - bet));
 
 				history.push(a);
-				$("#bet").val(parseInt(bet*2));
+				$("#bet").val(parseFloat(bet*2));
 
 				loseS += bet;
 			}
