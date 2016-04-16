@@ -1,0 +1,80 @@
+<!doctype html>
+
+<head> 
+	<title>_</title>
+    <script type='text/javascript' src='./jquery.min.js'></script>
+    <script type='text/javascript' src='./bootstrap.min.js'></script>
+    <link rel='stylesheet' href='./bootstrap.min.css'/>
+    <script type="text/javascript" src="./script.js"></script>
+    <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<!--    <script src="http://crypto-js.googlecode.com/svn/tags/3.0.2/build/rollups/hmac-sha256.js"></script>
+  <script src="http://crypto-js.googlecode.com/svn/tags/3.0.2/build/components/enc-base64-min.js"></script> -->
+</head>
+
+<body>
+  <br>
+  <div class="container-fluid col-md-2">
+    <label>Total Wagered:</label>
+    <input class="form-control" id="total" type="number" value="0" readonly></label>
+    <br>
+
+    <label>Total Bets:</label>
+    <input class="form-control" id="num" type="number" value="0" readonly></label>
+    <br>
+
+    <label>Profit:</label>
+    <input class="form-control" id="profit" type="number" value="0" readonly></label>
+    <br>
+
+    <label>Amount Won:</label>
+    <input class="form-control" id="win" type="number" value="0" readonly></label>
+    <br>
+
+    <label>Amount Lost:</label>
+    <input class="form-control" id="lose" type="number" value="0" readonly></label>
+    <br>
+
+    <hr>
+  </div>
+	<div class="container-fluid col-md-6">
+		<label>Balance:</label>
+		<input class="form-control"  type="number" id="balance" value="1000">
+		<br>
+		<label>Bet Amount:</label>
+		<input class="form-control"  type="number" id="bet" value="2"/>
+		<br>
+
+    <label>Win Chance (Under)</label>
+    <input class="form-control" type="number" id="chance"  value="47.5" readonly/>
+    <br>
+    <label>Multiplier</label>
+    <input class="form-control" type="number" id="mult"  value="2" readonly/>
+    <br>
+    <label>Speed</label>
+    <input class="form-control" type="number" id="speed"  value="250"/>
+    <br>
+
+		<br>
+		<button class="btn btn-default" id="start">Start</button>
+    <button class="btn btn-default" id="stop">Stop</button>
+
+    <br>
+	</div>
+
+  <div class="container-fluid col-md-4">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Roll</th>
+          <th>Profit/Loss</th>
+        </tr>
+      </thead>
+      <tbody id="t">
+      </tbody>
+    </table>
+  </div>
+</body>
+
+
+</html>
