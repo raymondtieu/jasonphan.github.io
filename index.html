@@ -1,79 +1,117 @@
 <!doctype html>
 
 <head> 
-	<title>_</title>
-    <script type='text/javascript' src='./jquery.min.js'></script>
-    <script type='text/javascript' src='./bootstrap.min.js'></script>
-    <link rel='stylesheet' href='./bootstrap.min.css'/>
-    <script type="text/javascript" src="./script.js"></script>
-    <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-<!--    <script src="http://crypto-js.googlecode.com/svn/tags/3.0.2/build/rollups/hmac-sha256.js"></script>
-  <script src="http://crypto-js.googlecode.com/svn/tags/3.0.2/build/components/enc-base64-min.js"></script> -->
+    <title>_</title>
+        <script type='text/javascript' src='./jquery.min.js'></script>
+
+        <script type="text/javascript" src="./script.js"></script>
+        <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+
+        <!-- Compiled and minified CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/css/materialize.min.css">
+
+        <!-- Compiled and minified JavaScript -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/js/materialize.min.js"></script>
+        
 </head>
 
-<body>
-  <br>
-  <div class="container-fluid col-md-2">
-    <label>Total Wagered:</label>
-    <input class="form-control" id="total" type="number" value="0" readonly></label>
+<body class="">
     <br>
+    <div class="row">
+        <div class="col s4 m2 l2">
+            <label>Total Wagered:</label>
+            <input class="form-control" id="total" type="number" value="0" disabled></label>
+            <br>
 
-    <label>Total Bets:</label>
-    <input class="form-control" id="num" type="number" value="0" readonly></label>
-    <br>
+            <label>Total Bets:</label>
+            <input class="form-control" id="num" type="number" value="0" disabled></label>
+            <br>
 
-    <label>Profit:</label>
-    <input class="form-control" id="profit" type="number" value="0" readonly></label>
-    <br>
+            <label>Profit:</label>
+            <input class="form-control" id="profit" type="number" value="0" disabled></label>
+            <br>
 
-    <label>Amount Won:</label>
-    <input class="form-control" id="win" type="number" value="0" readonly></label>
-    <br>
+            <label>Amount Won:</label>
+            <input class="form-control" id="win" type="number" value="0" disabled></label>
+            <br>
 
-    <label>Amount Lost:</label>
-    <input class="form-control" id="lose" type="number" value="0" readonly></label>
-    <br>
+            <label>Amount Lost:</label>
+            <input class="form-control" id="lose" type="number" value="0" disabled></label>
+            <br>
 
-    <hr>
-  </div>
-	<div class="container-fluid col-md-6">
-		<label>Balance:</label>
-		<input class="form-control"  type="number" id="balance" value="10000">
-		<br>
-		<label>Bet Amount:</label>
-		<input class="form-control"  type="number" id="bet" value="1"/>
-		<br>
+        </div>
+        <div class="col s8 m6 l6">
+            <label>Balance:</label>
+            <input class="form-control setting" type="number" id="balance" value="10000">
+            <br>
+            <label>Bet Amount:</label>
+            <input class="form-control setting" type="number" id="bet" value="1"/>
+            <br>
 
-    <label>Win Chance (Under)</label>
-    <input class="form-control" type="number" id="chance"  value="47.5" readonly/>
-    <br>
-    <label>Multiplier</label>
-    <input class="form-control" type="number" id="mult"  value="1" readonly/>
-    <br>
-    <label>Speed</label>
-    <input class="form-control" type="number" id="speed"  value="250"/>
-    <br>
+            <label>Win Chance (Under)</label> 
+            <p class="range-field">
+                    <input type="range" id="slider" class="setting" min="1" max="99"  value="47.5" onChange="sliderChange(this.value)"/>
+                    <input class="form-control setting" type="number" id="chance" value="47.5" onChange="chanceChange(this.value)"/>
+            </p>
+         
+            <label>Speed</label>
+            <input class="form-control setting" type="number" id="speed"  value="250"/>
+            <br>
 
-		<br>
-		<button class="btn btn-default" id="start">Start</button>
-    <button class="btn btn-default" id="stop">Stop</button>
+            <div class="row">
+                <div class="col m6">
+                    <label>On Win</label>
+                    <p>
+                        <input name="onWin" type="radio" id="winReturnToBase" class="setting" />
+                        <label for="winReturnToBase">Return to base bet</label>
+                    </p>
+                    <p>
+                        <input name="onWin" type="radio" id="winMultiplier" class="setting" checked/>
+                        <label for="winMultiplier">Multiply by <input class="form-control" type="number" id="winMultiplierVal" value="1"/></label>
+                    </p>
+                    <br>
+                </div>
+                <div class="col m6">
 
-    <br>
-	</div>
+                 <label>On Lose</label>
+                    <p>
+                        <input name="onLose" type="radio" id="loseReturnToBase" class="setting" />
+                        <label for="loseReturnToBase">Return to base bet</label>
+                    </p>
+                    <p>
+                        <input name="onLose" type="radio" id="loseMultiplier" class="setting" checked/>
+                        <label for="loseMultiplier">Multiply by <input class="form-control" type="number" id="loseMultiplierVal" value="1"/></label>
+                    </p>
+                </div>
+            </div>
+            <br>
 
-  <div class="container-fluid col-md-4">
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>Roll</th>
-          <th>Profit/Loss</th>
-        </tr>
-      </thead>
-      <tbody id="t">
-      </tbody>
-    </table>
-  </div>
+            <label>Max Bet</label>
+            <input type="number" class="form-control setting" value="9999999999999" id="maxBet"/>
+
+            <br>
+
+            <br>
+            <button class="grey waves-effect waves-light btn" id="start">Start</button>
+            <button class="grey waves-effect waves-light btn" id="stop">Stop</button>
+
+            <br>
+        </div>
+
+    <div class="col s6 m4 l4">
+        <table class="striped">
+            <thead>
+                <tr>
+                    <th>Roll</th>
+                    <th>Profit/Loss</th>
+                </tr>
+            </thead>
+            <tbody id="t">
+            </tbody>
+        </table>
+    </div>
+    </div>
 </body>
 
 
