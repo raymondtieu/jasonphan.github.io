@@ -1,23 +1,37 @@
 $(document).ready(function() {
-	var history = [];
-	var a = [];
 	var t;
-	var initial;
 	var tt;
-	var num = 0;
-	var total = 0;
-	var winS = 0;
-	var loseS = 0;
+
+	let session = {
+		balance: parseFloat($("#balance").val()),
+		
+		total: 0,
+		wins: 0,
+		losses: 0,
+
+		totalBets: 0,
+
+		history: [],
+	};
+
+	let settings = {
+		multiplier: parseFloat($("#mult").val()),
+		winChance: 47.5,// win chance
+		speed: parseFloat($("#speed").val()),
+	};
+
+	let round = {
+		roll: -1,
+		initial: 1,
+		bet: 1,
+		profit: 0,
+	};
 
 	$("#start").click(function() {
 		$(this).prop( "disabled", true );
 
-		var speed = parseFloat($("#speed").val());
-		var mult = parseFloat($("#mult").val());
-		initial = parseFloat($("#bet").val());
-
-		var tt = setInterval(function() {
-			if (parseFloat($("#bet").val()) > parseFloat($("#balance").val())) {
+		tt = setInterval(function() {
+			if (round.bet > session.balance) {
 				clearInterval(tt);
 				clearInterval(t);
 				alert("Insufficient Funds");
@@ -26,55 +40,8 @@ $(document).ready(function() {
 		}, 1);
 
 		t = setInterval(function() { 
-			var bal = parseFloat($("#balance").val());
-			var bet = parseFloat($("#bet").val());
-			var profit = parseFloat($("#profit").val());
-
-			num++;
-			total += bet;
-
-			var r = Math.random();
-			if (r*100 <= 47.5) {
-				$("#balance").val(parseFloat(bal + bet*mult));
-
-				if (history.length > 15) {
-					history.shift();
-				}
-
-				a.push(r*100);
-				a.push("<strong style='color:green;'>" + bet*mult + "</strong>");
-				$("#profit").val(parseFloat(profit + bet*mult));
-
-				history.push(a);
-
-				$("#bet").val(parseFloat(initial));
-
-				winS += bet*mult;
-
-			} else {
-				$("#balance").val(parseFloat(bal - bet));
-				if (history.length > 15) {
-					history.shift();
-				}
-
-				a.push(r*100);
-				a.push("<strong style='color:red;'>" + bet + "</strong>");
-				$("#profit").val(parseFloat(profit - bet));
-
-				history.push(a);
-				$("#bet").val(parseFloat(bet*2));
-
-				loseS += bet;
-			}
-
-			a = [];
-			refresh();
-			$("#num").val(num);
-			$("#total").val(total);
-			$("#win").val(winS);
-			$("#lose").val(loseS);
-
-		}, speed);
+			roll();
+		}, settings.speed);
 	});
 
 	$("#stop").click(function() {
@@ -82,11 +49,68 @@ $(document).ready(function() {
 		$("#start").prop( "disabled", false );
 	});
 
-	function refresh() {
+	function roll() {
+		session.totalBets++;
+		session.total += round.bet;
+
+		round.roll = Math.random() * 100;
+
+		if (round.roll <= settings.winChance) {
+			onWin();
+		} else {
+			onLose();
+		}
+	}
+
+	function onWin() {
+		let winnings = round.bet*settings.multiplier
+		
+		session.balance+=winnings;
+		session.wins+=winnings;
+
+		round.bet = round.initial;
+
+		let views = [];
+		views.push(round.roll);
+		views.push("<strong style='color:green;'>" + winnings + "</strong>");
+
+		updateView(views);
+
+	}
+
+	function onLose() {
+		session.balance-=round.bet;
+		session.losses+=round.bet;
+
+		round.bet*=2;
+
+		let views = [];
+		views.push(round.roll);
+		views.push("<strong style='color:red;'>" + round.bet + "</strong>");
+
+		updateView(views);
+	}
+
+	function updateView(views) {
+		// Update history of rolls
+		session.history.push(views);
+
 		$("#t").html("");
-		for (var i = 0; i < history.length; i++) {
-			$("#t").append("<tr><td>" + history[i][0] + "</td><td>" + history[i][1] + "</tr>");
+		session.history.forEach((row) => {
+			$("#t").append("<tr><td>" + row[0] + "</td><td>" + row[1] + "</tr>");
+		});
+
+		if (session.history.length > 15) {
+			session.history.shift();
 		}
 
+		// Update session
+		$("#balance").val(session.balance);
+		$("#profit").val(session.wins - session.losses);
+		$("#num").val(session.totalBets);
+		$("#total").val(session.total);
+		$("#win").val(session.wins);
+		$("#lose").val(session.losses);
+		$("#bet").val(round.bet);
 	}
 });
